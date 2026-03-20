@@ -919,7 +919,7 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox
 
 // 讓所有圖片可以點擊放大
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('img.pkg-photo, img.product-thumb').forEach(img => {
+  document.querySelectorAll('img.pkg-photo, img.product-thumb, .product-tag img').forEach(img => {
     img.style.cursor = 'zoom-in';
     img.addEventListener('click', () => {
       if(img.src && !img.src.endsWith('#')) openLightbox(img.src);
