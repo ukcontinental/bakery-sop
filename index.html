@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bakery 教學手冊 — La Petite Colline & Shan Shan Cafe</title>
+<style>
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --surface-warm: #F7F3EE;
+    --border: #E5DFD6;
+    --accent: #C8922A;
+    --accent-light: #F5E9D5;
+    --text: #2C2520;
+    --text-muted: #7A6E65;
+    --green-bg: #EBF5F0;
+    --green-text: #1F6B4A;
+    --green-border: #A8D5BC;
+    --red-bg: #FDF0EB;
+    --red-text: #B84020;
+    --red-border: #F0BBA8;
+    --orange-bg: #FEF6E8;
+    --orange-border: #E8C56A;
+    --blue-bg: #EBF1F8;
+    --blue-text: #1A4A7A;
+    --radius: 10px;
+    --shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; font-size: 15px; line-height: 1.7; }
+
+  /* ─── Header ─── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { font-size: 22px; }
+  .logo-text h1 { font-size: 18px; font-weight: 700; color: var(--text); }
+  .logo-text p { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+  .version { font-size: 12px; color: var(--accent); font-weight: 600; }
+
+  /* ─── Nav ─── */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  nav button {
+    background: none; border: none; cursor: pointer;
+    padding: 13px 18px;
+    font-size: 14px; color: var(--text-muted);
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: inherit;
+  }
+  nav button:hover { color: var(--accent); }
+  nav button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  /* ─── Main ─── */
+  main { max-width: 960px; margin: 0 auto; padding: 36px 24px 80px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ─── Section titles ─── */
+  .section-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: var(--text); }
+  .section-title small { font-size: 13px; font-weight: 400; color: var(--text-muted); margin-left: 8px; }
+
+  /* ─── Cards ─── */
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+  .card .card-icon { font-size: 28px; margin-bottom: 10px; }
+  .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ─── Alert boxes ─── */
+  .alert { border-radius: var(--radius); padding: 16px 20px; margin-bottom: 16px; }
+  .alert-green { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green-text); }
+  .alert-red { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red-text); }
+  .alert-orange { background: var(--orange-bg); border-left: 4px solid var(--accent); }
+  .alert-blue { background: var(--blue-bg); border: 1px solid #AABFD6; color: var(--blue-text); }
+  .alert h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .alert ul { padding-left: 18px; }
+  .alert ul li { margin-bottom: 4px; font-size: 14px; }
+
+  /* ─── Mnemonic ─── */
+  .mnemonic {
+    background: var(--surface-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .mnemonic strong { color: var(--accent); }
+
+  /* ─── Table ─── */
+  .table-wrap { overflow-x: auto; margin-bottom: 24px; border-radius: var(--radius); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; background: var(--surface); }
+  th { background: var(--surface-warm); font-size: 13px; font-weight: 600; padding: 10px 14px; text-align: left; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  td { padding: 10px 14px; font-size: 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .tag-sweet { background: #FDEFD6; color: #A0620A; }
+  .tag-savory { background: #E8F0E8; color: #3A6A3A; }
+  .tag-cold { background: #E0EBF8; color: #1A4A7A; }
+  .tag-accent { color: var(--accent); font-weight: 600; font-size: 13px; }
+  .product-thumb {
+    width: 36px; height: 36px; border-radius: 6px;
+    object-fit: cover; background: #EEE;
+    display: inline-block; vertical-align: middle;
+    margin-right: 8px;
+  }
+  .product-thumb-placeholder {
+    width: 36px; height: 36px; border-radius: 6px;
+    background: var(--surface-warm);
+    border: 1px solid var(--border);
+    display: inline-block; vertical-align: middle;
+    margin-right: 8px;
+  }
+  .product-name-cell { display: flex; align-items: center; }
+
+  /* ─── Package types ─── */
+  .pkg-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .pkg-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+  .pkg-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--accent); color: #FFF;
+    font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pkg-info h3 { font-size: 16px; font-weight: 700; }
+  .pkg-info .pkg-subtitle { font-size: 13px; color: var(--text-muted); }
+  .pkg-photo {
+    width: 100px; height: 80px; object-fit: cover;
+    border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface-warm);
+    flex-shrink: 0; margin-left: auto;
+  }
+  .pkg-seal {
+    font-size: 13px; color: var(--text-muted);
+    padding: 6px 12px;
+    background: var(--surface-warm);
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .pkg-seal strong { color: var(--text); }
+  .product-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .product-tag {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface-warm);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 13px;
+    cursor: default;
+  }
+  .product-tag img {
+    width: 24px; height: 24px; border-radius: 50%;
+    object-fit: cover; background: #EEE;
+  }
+  .product-tag .pt-placeholder {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--border);
+    display: inline-block;
+  }
+
+  /* ─── Steps ─── */
+  .step-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .step-title { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .step-num {
+    background: var(--accent); color: #FFF;
+    width: 28px; height: 28px; border-radius: 50%;
+    font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .priority-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
+  .priority-badge {
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 13px; font-weight: 600;
+  }
+  .pb-high { background: #FCE8D8; color: #B84020; }
+  .pb-mid { background: #FBF1DA; color: #8A6010; }
+  .pb-low { background: #EAEAEA; color: #555; }
+  .pb-green { background: #DFF2E8; color: #1A6640; }
+  .pb-blue { background: #DAE8F8; color: #1A3A7A; }
+  .arrow { color: var(--text-muted); font-size: 16px; }
+
+  .order-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .order-card {
+    background: var(--surface-warm);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .order-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--accent); }
+  .order-sub { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin: 8px 0 4px; letter-spacing: 0.5px; }
+  .flow { font-size: 13px; line-height: 1.8; }
+  .flow .arrow-right { color: var(--accent); }
+
+  /* ─── Heating steps ─── */
+  .heat-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+  .heat-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+  }
+  .heat-step .hn {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent-light); color: var(--accent);
+    font-weight: 700; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 6px;
+  }
+
+  /* ─── Location summary ─── */
+  .location-table { width: 100%; border-collapse: collapse; }
+  .location-table th, .location-table td { padding: 10px 14px; font-size: 14px; border-bottom: 1px solid var(--border); }
+  .location-table th { background: var(--surface-warm); font-weight: 600; font-size: 13px; color: var(--text-muted); }
+
+  /* ─── Commercial orders ─── */
+  .biz-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .biz-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+  }
+  .biz-card h3 { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 12px; }
+  .biz-card ul { list-style: none; padding: 0; }
+  .biz-card ul li { font-size: 13px; padding: 5px 0; border-bottom: 1px solid var(--border); color: var(--text-muted); line-height: 1.5; }
+  .biz-card ul li:last-child { border-bottom: none; }
+  .biz-card ul li::before { content: "—"; color: var(--accent); margin-right: 6px; }
+
+  /* ─── Storage table ─── */
+  .storage-table { width: 100%; border-collapse: collapse; }
+  .storage-table th, .storage-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .storage-table th { background: var(--surface-warm); font-weight: 600; font-size: 13px; color: var(--text-muted); text-align: left; }
+  .storage-table .type-sweet { color: #A0620A; font-weight: 600; }
+  .storage-table .type-savory { color: #3A6A3A; font-weight: 600; }
+
+  /* ─── Footer ─── */
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 700px) {
+    header { padding: 12px 16px; }
+    nav { padding: 0 8px; }
+    main { padding: 20px 12px 60px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .order-type-grid { grid-template-columns: 1fr; }
+    .biz-grid { grid-template-columns: 1fr; }
+    .heat-steps { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-icon">🍞</span>
+    <div class="logo-text">
+      <h1>Bakery 教學手冊</h1>
+      <p>La Petite Colline &amp; Shan Shan Cafe</p>
+    </div>
+  </div>
+  <span class="version">最終版 v1.4</span>
+</header>
+
+<nav id="main-nav">
+  <button class="active" onclick="showTab('tab-role')">角色總覽</button>
+  <button onclick="showTab('tab-packaging')">包材識別</button>
+  <button onclick="showTab('tab-table')">包裝對照表</button>
+  <button onclick="showTab('tab-orders')">訂單處理</button>
+  <button onclick="showTab('tab-commercial')">商業訂單</button>
+  <button onclick="showTab('tab-knowledge')">產品知識</button>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 1：角色總覽
+══════════════════════════════════════════════════ -->
+<div id="tab-role" class="tab-panel active">
+  <h2 class="section-title">我負責什麼？</h2>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">📦</div>
+      <h3>麵包包裝</h3>
+      <p>根據產品選對包材，按規定包裝，整齊擺放至指定位置</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧾</div>
+      <h3>接單打包</h3>
+      <p>機台出單後快速取單，按優先級判斷打包順序，核對後交至正確位置</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏪</div>
+      <h3>商業訂單</h3>
+      <p>準備 DUDU、Village Grocery、早餐店訂單，按各家要求包裝</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧑‍💼</div>
+      <h3>支援收銀</h3>
+      <p>收銀繁忙或下班時支援點單，具體規範參考 Cashier SOP</p>
+    </div>
+  </div>
+
+  <div class="mnemonic">
+    <strong>記憶口訣：</strong>先甜後鹹包裝好，出單取單別遲到，優先級別要記牢，商業訂單rush後做
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 2：包材識別
+══════════════════════════════════════════════════ -->
+<div id="tab-packaging" class="tab-panel">
+  <h2 class="section-title">7種包材一眼識別</h2>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;">將產品圖片放入 <code>images/</code> 資料夾後即可顯示</p>
+
+  <!-- ① -->
+  <div class="pkg-block">
+    <div class="pkg-header">
+      <div class="pkg-num">①</div>
+      <div class="pkg-info">
+        <h3>透明環保袋</h3>
+        <p class="pkg-subtitle">COMPOSTABLE 透明袋</p>
+        <p class="pkg-subtitle" style="margin-top:4px;">標有「COMPOSTABLE」字樣 · 全透明</p>
+      </div>
+      <img class="pkg-photo" src="images/bags/bag-1-transparent.jpeg" alt="透明環保袋" onerror="this.style.background='#EEE'">
+    </div>
+    <div class="pkg-seal"><strong>封口：</strong>熱封處理 · LOGO面朝上 <span style="color:var(--red-text);font-weight:600;">· 完全冷卻後再封口</span></div>
+    <div class="product-tags">
+      <span class="product-tag"><span class="pt-placeholder"></span>台式菠蘿包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>巧克力菠蘿包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>抹茶紅豆菠蘿包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>台式青蔥包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>紅豆麵包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>台式經典奶酥</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>蔓越莓奶酥</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>培根起司棒</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>雙醬起司玉米麵包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>克林姆麵包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>紫米肉鬆芋頭包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>紫米黑芝麻麵包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>台式脆腸卷</span>
+    </div>
+  </div>
+
+  <!-- ② -->
+  <div class="pkg-block">
+    <div class="pkg-header">
+      <div class="pkg-num">②</div>
+      <div class="pkg-info">
+        <h3>褐色品牌透明袋</h3>
+        <p class="pkg-subtitle">咖啡色底印LOGO袋</p>
+        <p class="pkg-subtitle" style="margin-top:4px;">咖啡色底 · 透明視窗 · 印 LA PETITE COLLINE</p>
+      </div>
+      <img class="pkg-photo" src="images/bags/bag-2-brown.jpeg" alt="褐色品牌透明袋" onerror="this.style.background='#EEE'">
+    </div>
+    <div class="pkg-seal"><strong>封口：</strong>熱封處理 · LOGO面朝上 <span style="color:var(--red-text);font-weight:600;">· 完全冷卻後再封口</span></div>
+    <div class="product-tags">
+      <span class="product-tag"><span class="pt-placeholder"></span>台式肉鬆小餐包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>葡萄小麵包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>咖啡UFO</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>巧克力螺卷</span>
+    </div>
+  </div>
+
+  <!-- ③ -->
+  <div class="pkg-block">
+    <div class="pkg-header">
+      <div class="pkg-num">③</div>
+      <div class="pkg-info">
+        <h3>白色窗口袋</h3>
+        <p class="pkg-subtitle">白紙底透明視窗袋</p>
+        <p class="pkg-subtitle" style="margin-top:4px;">白色紙底 · 中間透明視窗 · 印LOGO</p>
+      </div>
+      <img class="pkg-photo" src="images/bags/bag-3-white-window.jpeg" alt="白色窗口袋" onerror="this.style.background='#EEE'">
+    </div>
+    <div class="pkg-seal"><strong>封口：</strong>折三次，貼上膠帶 <span style="color:var(--red-text);font-weight:600;">· 完全冷卻後再封口</span></div>
+    <div class="product-tags">
+      <span class="product-tag"><span class="pt-placeholder"></span>開心果可芬</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>覆盆子可芬</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>百香果可芬</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>蒜蒜球</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>巧克力波波</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>巧克力豆豆</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>松露鹽之花奶油捲</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>迷你小可頌</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>明太子法國</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>塔塔夏威夷法國</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>鹽之花奶油捲</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>香蔥肉鬆辮</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>菠蘿吐司</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>脆皮榛果杏仁可頌</span>
+    </div>
+  </div>
+
+  <!-- ④ -->
+  <div class="pkg-block">
+    <div class="pkg-header">
+      <div class="pkg-num">④</div>
+      <div class="pkg-info">
+        <h3>白色紙袋（無窗）</h3>
+        <p class="pkg-subtitle">全白不透明紙袋</p>
+        <p class="pkg-subtitle" style="margin-top:4px;">全白不透明 · 印LOGO · 無透明窗口</p>
+      </div>
+      <img class="pkg-photo" src="images/bags/bag-4-white-paper.jpeg" alt="白色紙袋" onerror="this.style.background='#EEE'">
+      <img class="pkg-photo" src="images/bags/bag-4-white-paper-label.jpeg" alt="白色紙袋產品名稱" onerror="this.style.background='#EEE'" style="margin-left:8px;">
+    </div>
+    <div class="pkg-seal"><strong>封口：</strong>封口反折，貼上膠帶，露出產品名稱貼紙 <span style="color:var(--red-text);font-weight:600;">· 完全冷卻後再封口</span></div>
+    <div class="product-tags">
+      <span class="product-tag"><span class="pt-placeholder"></span>巧克力牛奶麵包</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>法式焦糖奶油酥</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>莓果核桃籃子</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>松露菇菇</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>亞麻籽蔓越莓乳酪球</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>法式芥末脆腸</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>香草蘋果丹麥</span>
+    </div>
+  </div>
+
+  <!-- ⑤ -->
+  <div class="pkg-block">
+    <div class="pkg-header">
+      <div class="pkg-num">⑤</div>
+      <div class="pkg-info">
+        <h3>大吐司袋</h3>
+        <p class="pkg-subtitle">大款吐司專用袋（2款）</p>
+        <p class="pkg-subtitle" style="margin-top:4px;">因通路不同使用不同款式，功能相同</p>
+      </div>
+      <img class="pkg-photo" src="images/bags/bag-5-large-toast.jpeg" alt="大吐司袋" onerror="this.style.background='#EEE'">
+    </div>
+    <div class="pkg-seal"><strong>折法：</strong>折三次，用兩邊凸出的鐵絲封緊 <span style="color:var(--red-text);font-weight:600;">· 完全冷卻後再封口</span></div>
+    <div class="product-tags">
+      <span class="product-tag"><span class="pt-placeholder"></span>早餐吐司</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>蔥花肉鬆吐司</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>軟軟的牛奶吐司</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>柴燒黑糖吐司</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>全麥吐司</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>菠蘿三兄弟</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>丹麥吐司</span>
+    </div>
+  </div>
+
+  <!-- ⑥ -->
+  <div class="pkg-block">
+    <div class="pkg-header">
+      <div class="pkg-num">⑥</div>
+      <div class="pkg-info">
+        <h3>小吐司袋（生吐司專用）</h3>
+        <p class="pkg-subtitle">生吐司半透明袋</p>
+        <p class="pkg-subtitle" style="margin-top:4px;">半透明 · 貼有「生」字標籤或圓形LOGO貼紙</p>
+      </div>
+      <img class="pkg-photo" src="images/bags/bag-6-small-toast.jpeg" alt="小吐司袋" onerror="this.style.background='#EEE'">
+    </div>
+    <div class="pkg-seal"><strong>折法：</strong>折三次，用兩邊凸出的鐵絲封緊 <span style="color:var(--red-text);font-weight:600;">· 完全冷卻後再封口</span></div>
+    <div class="product-tags">
+      <span class="product-tag"><span class="pt-placeholder"></span>日式生吐司</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>養生紫米紅豆生吐司</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>脆皮吐司</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>龍眼蜜吐司</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>黑芝麻吐司</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>生吐司奶酥厚片</span>
+    </div>
+  </div>
+
+  <!-- ⑦ -->
+  <div class="pkg-block" style="border-left: 4px solid var(--accent);">
+    <div class="pkg-header">
+      <div class="pkg-num">⑦</div>
+      <div class="pkg-info">
+        <h3>紙盒 <span style="background:#FCE8D8;color:#B84020;font-size:12px;padding:2px 8px;border-radius:10px;margin-left:4px;">需螢光筆標記</span></h3>
+        <p class="pkg-subtitle">冷藏專屬盒裝</p>
+        <p class="pkg-subtitle" style="margin-top:4px;">透明上蓋 · 白色底盒 · 圓形LOGO貼紙封口</p>
+      </div>
+      <img class="pkg-photo" src="images/bags/bag-7-box.jpeg" alt="紙盒" onerror="this.style.background='#EEE'">
+    </div>
+    <div class="alert alert-red" style="margin-bottom:12px;padding:10px 14px;">
+      <strong>注意：</strong>訂單上務必以螢光筆標記冷藏提示
+    </div>
+    <div class="product-tags">
+      <span class="product-tag"><span class="pt-placeholder"></span>羅馬生乳麵包（芒果）</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>羅馬生乳麵包（草莓）</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>羅馬生乳麵包（鮮奶油）</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>羅馬生乳麵包（抹茶紅豆）</span>
+      <span class="product-tag"><span class="pt-placeholder"></span>芋頭布丁菠蘿</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 3：包裝對照表
+══════════════════════════════════════════════════ -->
+<div id="tab-table" class="tab-panel">
+  <h2 class="section-title">包裝對照表</h2>
+
+  <!-- 大原則 -->
+  <div class="alert alert-orange" style="margin-bottom:20px;">
+    <h4>包裝大原則 — 順序 &amp; 注意事項</h4>
+    <ul style="padding-left:18px;font-size:14px;">
+      <li>先包甜口味，再包鹹口味</li>
+      <li>透明袋 / 褐色袋 → 熱封處理，<strong>完全冷卻後再裝</strong></li>
+      <li>有LOGO的袋子，正面朝上 / 朝前</li>
+      <li>吐司袋（大/小）折三次，用兩邊鐵絲封緊</li>
+    </ul>
+  </div>
+
+  <!-- Buns 表 -->
+  <h3 style="font-size:17px;font-weight:700;margin-bottom:12px;">Buns 包裝對照表</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:44px;"></th>
+          <th>產品</th>
+          <th>口味</th>
+          <th>包材</th>
+          <th>封口 / 注意</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- ①透明環保袋 -->
+        <tr><td><img class="product-thumb" src="images/products/台式菠蘿包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>台式菠蘿包</td><td><span class="tag tag-sweet">甜</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/巧克力菠蘿包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>巧克力菠蘿包</td><td><span class="tag tag-sweet">甜</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/抹茶紅豆菠蘿包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>抹茶紅豆菠蘿包</td><td><span class="tag tag-sweet">甜</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/台式青蔥包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>台式青蔥包</td><td><span class="tag tag-savory">鹹</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/紅豆麵包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>紅豆麵包</td><td><span class="tag tag-sweet">甜</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/台式經典奶酥.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>台式經典奶酥</td><td><span class="tag tag-sweet">甜</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/蔓越莓奶酥.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>蔓越莓奶酥</td><td><span class="tag tag-sweet">甜</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/培根起司棒.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>培根起司棒</td><td><span class="tag tag-savory">鹹</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/雙醬起司玉米麵包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>雙醬起司玉米麵包</td><td><span class="tag tag-savory">鹹</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/克林姆麵包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>克林姆麵包</td><td><span class="tag tag-sweet">甜</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/紫米肉鬆芋頭包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>紫米肉鬆芋頭包</td><td><span class="tag tag-sweet">甜</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/紫米黑芝麻麵包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>紫米黑芝麻麵包</td><td><span class="tag tag-sweet">甜</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/台式脆腸卷.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>台式脆腸卷</td><td><span class="tag tag-savory">鹹</span></td><td>① 透明環保袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <!-- ②褐色透明袋 -->
+        <tr><td><img class="product-thumb" src="images/products/台式肉鬆小餐包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>台式肉鬆小餐包</td><td><span class="tag tag-savory">鹹</span></td><td>② 褐色透明袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/葡萄小麵包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>葡萄小麵包</td><td><span class="tag tag-sweet">甜</span></td><td>② 褐色透明袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/咖啡UFO.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>咖啡UFO</td><td><span class="tag tag-sweet">甜</span></td><td>② 褐色透明袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/巧克力螺卷.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>巧克力螺卷</td><td><span class="tag tag-sweet">甜</span></td><td>② 褐色透明袋</td><td>麵包冷卻後以熱封處理</td></tr>
+        <!-- ③白色窗口袋 -->
+        <tr><td><img class="product-thumb" src="images/products/開心果可芬.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>開心果可芬</td><td><span class="tag tag-sweet">甜</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/覆盆子可芬.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>覆盆子可芬</td><td><span class="tag tag-sweet">甜</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/百香果可芬.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>百香果可芬</td><td><span class="tag tag-sweet">甜</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/蒜蒜球.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>蒜蒜球</td><td><span class="tag tag-savory">鹹</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/巧克力波波.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>巧克力波波</td><td><span class="tag tag-sweet">甜</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/巧克力豆豆.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>巧克力豆豆</td><td><span class="tag tag-sweet">甜</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/鹽之花奶油捲.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>鹽之花奶油捲（3個）</td><td><span class="tag tag-sweet">甜</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶 <span style="color:green;font-size:12px;">組合</span></td></tr>
+        <tr><td><img class="product-thumb" src="images/products/松露鹽之花奶油捲.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>松露鹽之花奶油捲</td><td><span class="tag tag-savory">鹹</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/迷你小可頌.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>迷你小可頌</td><td><span class="tag tag-sweet">甜</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/明太子法國.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>明太子法國</td><td><span class="tag tag-savory">鹹</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/塔塔夏威夷法國.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>塔塔夏威夷法國</td><td><span class="tag tag-savory">鹹</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/香蔥肉鬆辮.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>香蔥肉鬆辮</td><td><span class="tag tag-savory">鹹</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/菠蘿吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>菠蘿吐司</td><td><span class="tag tag-sweet">甜</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <!-- ④白色紙袋 -->
+        <tr><td><img class="product-thumb" src="images/products/脆皮榛果杏仁可頌.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>脆皮榛果杏仁可頌</td><td><span class="tag tag-sweet">甜</span></td><td>③ 白色窗口袋</td><td>折三次，貼膠帶</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/巧克力牛奶麵包.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>巧克力牛奶麵包</td><td><span class="tag tag-sweet">甜</span></td><td>④ 白色紙袋</td><td>封口反折，貼膠帶，露出名稱貼紙</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/法式焦糖奶油酥.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>法式焦糖奶油酥</td><td><span class="tag tag-sweet">甜</span></td><td>④ 白色紙袋</td><td>封口反折，貼膠帶，露出名稱貼紙</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/莓果核桃籃子.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>莓果核桃籃子</td><td><span class="tag tag-sweet">甜</span></td><td>④ 白色紙袋</td><td>封口反折，貼膠帶，露出名稱貼紙</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/松露菇菇.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>松露菇菇</td><td><span class="tag tag-savory">鹹</span></td><td>④ 白色紙袋</td><td>封口反折，貼膠帶，露出名稱貼紙</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/亞麻籽蔓越莓乳酪球.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>亞麻籽蔓越莓乳酪球</td><td><span class="tag tag-savory">鹹</span></td><td>④ 白色紙袋</td><td>封口反折，貼膠帶，露出名稱貼紙</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/法式芥末脆腸.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>法式芥末脆腸</td><td><span class="tag tag-savory">鹹</span></td><td>④ 白色紙袋</td><td>封口反折，貼膠帶，露出名稱貼紙</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/香草蘋果丹麥.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>香草蘋果丹麥</td><td><span class="tag tag-sweet">甜</span></td><td>④ 白色紙袋</td><td>封口反折，貼膠帶，露出名稱貼紙</td></tr>
+        <!-- ⑦紙盒 -->
+        <tr><td><img class="product-thumb" src="images/products/羅馬生乳麵包芒果.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>羅馬生乳麵包（芒果）</td><td><span class="tag tag-cold">冷藏</span></td><td>⑦ 紙盒</td><td>小票上記得以螢光筆註記</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/羅馬生乳麵包草莓.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>羅馬生乳麵包（草莓）</td><td><span class="tag tag-cold">冷藏</span></td><td>⑦ 紙盒</td><td>小票上記得以螢光筆註記</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/羅馬生乳麵包鮮奶油.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>羅馬生乳麵包（鮮奶油）</td><td><span class="tag tag-cold">冷藏</span></td><td>⑦ 紙盒</td><td>小票上記得以螢光筆註記</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/羅馬生乳麵包抹茶紅豆.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>羅馬生乳麵包（抹茶紅豆）</td><td><span class="tag tag-cold">冷藏</span></td><td>⑦ 紙盒</td><td>小票上記得以螢光筆註記</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/芋頭布丁菠蘿.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>芋頭布丁菠蘿</td><td><span class="tag tag-cold">冷藏</span></td><td>⑦ 紙盒</td><td>小票上記得以螢光筆註記</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bread 表 -->
+  <h3 style="font-size:17px;font-weight:700;margin:24px 0 12px;">Bread 吐司對照表</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:44px;"></th>
+          <th>產品</th>
+          <th>口味</th>
+          <th>包材</th>
+          <th>折法</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><img class="product-thumb" src="images/products/早餐吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>早餐吐司</td><td><span class="tag tag-savory">鹹</span></td><td>⑤ 大吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/蔥花肉鬆吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>蔥花肉鬆吐司</td><td><span class="tag tag-savory">鹹</span></td><td>⑤ 大吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/軟軟的牛奶吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>軟軟的牛奶吐司</td><td><span class="tag tag-sweet">甜</span></td><td>⑤ 大吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/柴燒黑糖吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>柴燒黑糖吐司</td><td><span class="tag tag-sweet">甜</span></td><td>⑤ 大吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/全麥吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>全麥吐司</td><td><span class="tag tag-sweet">甜</span></td><td>⑤ 大吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/菠蘿三兄弟.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>菠蘿三兄弟</td><td><span class="tag tag-sweet">甜</span></td><td>⑤ 大吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/丹麥吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>丹麥吐司</td><td><span class="tag tag-sweet">甜</span></td><td>⑤ 大吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/日式生吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>日式生吐司</td><td><span class="tag tag-sweet">甜</span></td><td>⑥ 小吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/養生紫米紅豆生吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>養生紫米紅豆生吐司</td><td><span class="tag tag-sweet">甜</span></td><td>⑥ 小吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/脆皮吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>脆皮吐司</td><td><span class="tag tag-sweet">甜</span></td><td>⑥ 小吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/龍眼蜜吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>龍眼蜜吐司</td><td><span class="tag tag-sweet">甜</span></td><td>⑥ 小吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/黑芝麻吐司.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>黑芝麻吐司</td><td><span class="tag tag-sweet">甜</span></td><td>⑥ 小吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+        <tr><td><img class="product-thumb" src="images/products/生吐司奶酥厚片.jpeg" alt="" onerror="this.outerHTML='<span class=\'product-thumb-placeholder\'></span>'"></td><td>生吐司奶酥厚片</td><td><span class="tag tag-sweet">甜</span></td><td>⑥ 小吐司袋</td><td class="tag-accent">折三次，鐵絲封緊</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 擺放位置 -->
+  <div class="alert alert-orange">
+    <h4>包裝後擺放位置</h4>
+    <ul style="padding-left:18px;font-size:14px;">
+      <li>透明袋 / 褐色袋軟麵包 → <strong>淺箱</strong></li>
+      <li>紙袋裝麵包 → <strong>車架</strong></li>
+      <li>咖啡UFO → <strong>深箱</strong>，置陳架下方</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 4：訂單處理
+══════════════════════════════════════════════════ -->
+<div id="tab-orders" class="tab-panel">
+  <h2 class="section-title">訂單處理</h2>
+
+  <!-- Step 1 -->
+  <div class="step-block">
+    <div class="step-title"><div class="step-num">1</div>判斷訂單優先級</div>
+    <div class="priority-row">
+      <span class="priority-badge pb-high">Takeout 最優先</span>
+      <span class="arrow">›</span>
+      <span class="priority-badge pb-mid">Dine-in</span>
+      <span class="arrow">›</span>
+      <span class="priority-badge pb-green">Uber</span>
+      <span class="arrow">›</span>
+      <span class="priority-badge pb-blue">Fantuan</span>
+      <span class="arrow">›</span>
+      <span class="priority-badge pb-low">Online 最後</span>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step-block">
+    <div class="step-title"><div class="step-num">2</div>裝袋順序</div>
+    <div class="alert alert-orange" style="margin-bottom:0;">
+      <strong>從重到輕，從硬到軟</strong>
+      <ul style="padding-left:18px;margin-top:8px;font-size:14px;">
+        <li>大件產品（吐司 / 盒裝）<strong>先放</strong></li>
+        <li>較硬、不易壓的麵包次之</li>
+        <li>較軟、輕的麵包最後放</li>
+      </ul>
+      <p style="margin-top:10px;font-size:13px;color:var(--text-muted);">口訣：大硬底、軟輕頂，不怕壓壞</p>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step-block">
+    <div class="step-title"><div class="step-num">3</div>按訂單類型處理</div>
+    <div class="order-type-grid">
+
+      <div class="order-card">
+        <h4>現場外帶 Takeout</h4>
+        <div class="order-sub">只有BAKERY商品</div>
+        <div class="flow">釘上總單 <span class="arrow-right">→</span> 直接交給顧客<br><small>（喊 Takeout to "Name"）</small></div>
+        <div class="order-sub">含BAR商品（Drink with Bread）</div>
+        <div class="flow">釘上總單 <span class="arrow-right">→</span> 暫置收銀機旁桌面 <span class="arrow-right">→</span> 品項齊全後呼喊顧客</div>
+        <div class="order-sub">含廚房餐點</div>
+        <div class="flow">釘上商品清單 <span class="arrow-right">→</span> 接待台斜後方層架 <span class="arrow-right">→</span> 等back人員組合整單</div>
+      </div>
+
+      <div class="order-card">
+        <h4>外送 / 預訂自取</h4>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Uber / Fantuan / Online</p>
+        <div class="order-sub">只有BAKERY產品</div>
+        <div class="flow">釘上總單 <span class="arrow-right">→</span> 接待台前方層架等待外送員</div>
+        <div class="order-sub">含BAR或廚房商品</div>
+        <div class="flow">包好Bakery <span class="arrow-right">→</span> 釘上商品清單 <span class="arrow-right">→</span> 後方層架 <span class="arrow-right">→</span> 齊單後移至前方</div>
+        <div class="order-sub">電話訂單</div>
+        <div class="flow">釘上總單 <span class="arrow-right">→</span> 後方層架 <span class="arrow-right">→</span> <strong style="color:#B84020;">確認付款後</strong> 才可領取</div>
+      </div>
+
+      <div class="order-card" style="grid-column: 1 / -1;">
+        <h4>內用 Dine-in</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <div class="order-sub">標註 *FOR HERE* 或 *AFTER MEAL*</div>
+            <div class="flow">選合適餐盤 <span class="arrow-right">→</span> 判斷是否需加熱 <span class="arrow-right">→</span> 上餐</div>
+            <div style="margin-top:12px;font-size:13px;font-weight:600;color:var(--text-muted);">需要加熱的步驟：</div>
+            <div class="heat-steps" style="grid-template-columns:repeat(2,1fr);margin-top:8px;">
+              <div class="heat-step"><div class="hn">1</div>烤箱上方入水口加入 3～5cc 飲用水</div>
+              <div class="heat-step"><div class="hn">2</div>左旋鈕轉至麵包類（約11點鐘方向）</div>
+              <div class="heat-step"><div class="hn">3</div>右旋鈕轉至 2～2.5 分鐘</div>
+              <div class="heat-step"><div class="hn">4</div>將單子與盛裝盤置於台面，表示使用中或等候烤箱</div>
+            </div>
+          </div>
+          <div>
+            <div class="order-sub">單上無標記（外帶單）</div>
+            <div class="flow">按外帶流程準備 <span class="arrow-right">→</span> 完成後整袋置於收銀機櫃台前方待客人離店時領取</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 重要提醒 -->
+  <div class="alert alert-red" style="margin-bottom:16px;">
+    <h4>重要提醒</h4>
+    <ul>
+      <li>務必認明單號，切忌重複包裝</li>
+      <li>冷藏/冷凍商品（羅馬生乳麵包、芋頭布丁菠蘿、芝士蛋糕、奶酥厚片、蒜香吐司）須在單上以螢光筆注記</li>
+      <li>Online order 會出兩張單：Bakery商品清單 + 整筆Duplicate copy</li>
+    </ul>
+  </div>
+
+  <!-- 擺放位置總結 -->
+  <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">擺放位置總結</h3>
+  <div class="table-wrap">
+    <table class="location-table">
+      <thead>
+        <tr><th>狀態</th><th>擺放位置</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>所有品項齊全</td><td>接待台前方層架</td></tr>
+        <tr><td>等候廚房餐點 / 未付款 / 未齊單</td><td>接待台斜後方層架</td></tr>
+        <tr><td>現場外帶 Drink with bread</td><td>收銀機旁桌面</td></tr>
+        <tr><td>內用顧客的外帶單</td><td>收銀機櫃台前方</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="mnemonic">
+    <strong>記憶：</strong>齊了放前 · 沒齊放後 · 飲品放收銀旁
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 5：商業訂單
+══════════════════════════════════════════════════ -->
+<div id="tab-commercial" class="tab-panel">
+  <h2 class="section-title">商業訂單</h2>
+
+  <!-- 時間安排 -->
+  <div class="alert alert-green" style="margin-bottom:20px;">
+    <h4>最佳時機</h4>
+    <ul>
+      <li>第一波 Rush hour 結束後的空檔處理商業訂單</li>
+      <li>當日須在此時準備好隔天DUDU訂單的包材</li>
+      <li>所有品項備齊後回報當日 Charge 檢查清點</li>
+    </ul>
+  </div>
+
+  <div class="biz-grid">
+    <div class="biz-card">
+      <h3>DUDU 訂單</h3>
+      <ul>
+        <li>前一日人員已備好包材，當日仍須仔細核對數量</li>
+        <li>備齊後擺放於餐廳後方（通往廁所/倉庫門旁的牆邊）等待廠商領取</li>
+        <li>部分麵包用熱壓機封口，須確認完整封口</li>
+        <li>吐司尚未降溫可暫不封口，降溫後由Back人員協助封口</li>
+      </ul>
+    </div>
+
+    <div class="biz-card">
+      <h3>Village Grocery 訂單</h3>
+      <ul>
+        <li>有多種吐司組合，須按要求分類裝填對應包裝</li>
+        <li>置於前門旁的透明大置物箱</li>
+        <li>吐司溫度仍高時暫不封口，降溫後再封（注意時間，不可過晚）</li>
+        <li>太陽強光直射導致吐司升溫時，須將透明箱移至餐廳後方</li>
+      </ul>
+    </div>
+
+    <div class="biz-card">
+      <h3>早餐店 訂單</h3>
+      <ul>
+        <li>薄片 1.6cm：10片一袋</li>
+        <li>厚片 3cm：粗分兩袋包裝</li>
+        <li>入袋後須將塑膠袋綁起，防止水分流失</li>
+        <li>完成後所有吐司放入白色深箱等待廠商領取</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 6：產品知識
+══════════════════════════════════════════════════ -->
+<div id="tab-knowledge" class="tab-panel">
+  <h2 class="section-title">產品知識</h2>
+
+  <!-- 顧客服務 -->
+  <h3 style="font-size:18px;font-weight:700;margin-bottom:16px;">顧客服務基本功</h3>
+
+  <div class="alert alert-green" style="margin-bottom:16px;">
+    <h4>迎賓與推薦</h4>
+    <ul>
+      <li>隨時注意進門顧客，即時以「Hello 您好」迎賓</li>
+      <li>熟記產品主要原料與特色，根據顧客喜好做推薦</li>
+      <li>時間充裕時口頭說明；時間不足時告知顧客掃描手提袋上的 QR Code</li>
+    </ul>
+  </div>
+
+  <!-- 保存方式 -->
+  <h3 style="font-size:17px;font-weight:700;margin:20px 0 12px;">麵包保存方式</h3>
+  <div class="table-wrap" style="margin-bottom:16px;">
+    <table class="storage-table">
+      <thead>
+        <tr>
+          <th>類型</th>
+          <th>常溫保存</th>
+          <th>冷凍保存</th>
+          <th>建議加熱方式</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="type-sweet">甜麵包</td>
+          <td>3 天</td>
+          <td>2 星期</td>
+          <td rowspan="2">烤箱或電鍋加熱後食用</td>
+        </tr>
+        <tr>
+          <td class="type-savory">鹹麵包</td>
+          <td>1～2 天</td>
+          <td>2 星期</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-red" style="margin-bottom:16px;">
+    <h4>重要提醒</h4>
+    <ul>
+      <li>麵包冷藏容易流失水分、影響口感</li>
+      <li>建議冷凍保存，回烤後口感較好</li>
+      <li>不建議冷藏，請直接冷凍</li>
+    </ul>
+  </div>
+
+  <div class="alert alert-orange">
+    <strong>告訴顧客的話：</strong>「冷凍比冷藏好，回烤後口感更佳，甜麵包常溫3天、鹹麵包1-2天，不建議冷藏」
+  </div>
+</div>
+
+</main>
+
+<footer>
+  Bakery SOP — La Petite Colline &amp; Shan Shan Cafe<br>
+  最終版 v1.4 · 如需更新請聯繫管理人員
+</footer>
+
+<!-- Lightbox -->
+<div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" style="max-width:90vw;max-height:90vh;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = ['tab-role','tab-packaging','tab-table','tab-orders','tab-commercial','tab-knowledge'];
+  document.querySelectorAll('nav button')[tabs.indexOf(id)].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  lb.style.display = 'flex';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+}
+
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+
+// 讓所有圖片可以點擊放大
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('img.pkg-photo, img.product-thumb').forEach(img => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => {
+      if(img.src && !img.src.endsWith('#')) openLightbox(img.src);
+    });
+  });
+});
+</script>
+</body>
+</html>
