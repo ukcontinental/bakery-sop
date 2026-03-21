@@ -34,18 +34,20 @@
   header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 0 40px;
-    height: 70px;
+    padding: 0 20px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
     position: sticky; top: 0; z-index: 100;
+    overflow: hidden;
   }
-  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; overflow: hidden; }
   .logo-icon { font-size: 22px; }
   .logo-text h1 { font-size: 18px; font-weight: 700; color: var(--text); }
   .logo-text p { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
-  .version { font-size: 12px; color: var(--accent); font-weight: 600; }
+  .version { font-size: 12px; color: var(--accent); font-weight: 600; white-space: nowrap; flex-shrink: 0; }
 
   /* ─── Nav ─── */
   nav {
@@ -69,7 +71,7 @@
   nav button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
 
   /* ─── Main ─── */
-  main { max-width: 960px; margin: 0 auto; padding: 36px 24px 80px; }
+  main { max-width: 960px; width: 100%; margin: 0 auto; padding: 36px 24px 80px; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
@@ -288,8 +290,10 @@
 
   /* ─── Responsive ─── */
   @media (max-width: 700px) {
-    header { padding: 10px 14px; height: auto; }
+    header { padding: 8px 12px; height: 52px; }
     .logo-text p { display: none; }
+    .logo-text h1 { font-size: 13px; }
+    .logo-icon { font-size: 16px; }
     .logo-text h1 { font-size: 15px; }
     .logo-icon { font-size: 18px; }
     nav { padding: 0 4px; }
@@ -326,7 +330,7 @@
       <p>La Petite Colline &amp; Shan Shan Cafe</p>
     </div>
   </div>
-  <img src="images/logo.jpeg" alt="Logo" style="height:80%;object-fit:contain;">
+  <img src="images/logo.jpeg" alt="Logo" style="height:40px;max-height:40px;width:auto;object-fit:contain;flex-shrink:1;min-width:0;">
   <span class="version">20260320版</span>
 </header>
 
