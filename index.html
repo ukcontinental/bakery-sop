@@ -240,16 +240,17 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 10px;
-    text-align: center;
+    padding: 12px;
+    text-align: left;
     font-size: 13px;
+    line-height: 1.5;
   }
   .heat-step .hn {
     width: 24px; height: 24px; border-radius: 50%;
     background: var(--accent-light); color: var(--accent);
     font-weight: 700; font-size: 12px;
     display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 6px;
+    margin: 0 0 8px 0;
   }
 
   /* ─── Location summary ─── */
@@ -290,9 +291,9 @@
 
   /* ─── Responsive ─── */
   @media (max-width: 700px) {
-    header { padding: 8px 12px; height: 52px; }
+    header { padding: 8px 12px; height: auto; min-height: 52px; }
     .logo-text p { display: none; }
-    .logo-text h1 { font-size: 13px; }
+    .logo-text h1 { font-size: 14px; }
     .logo-icon { font-size: 16px; }
     .logo-text h1 { font-size: 15px; }
     .logo-icon { font-size: 18px; }
@@ -312,7 +313,7 @@
     .pkg-header { flex-wrap: wrap; }
     .pkg-photo { width: 72px; height: 58px; }
 
-    /* Heating steps - 2×2 grid */
+    /* Heating steps - 2×2 grid on mobile */
     .heat-steps { grid-template-columns: repeat(2, 1fr) !important; }
 
     /* Dine-in inner 2-col → 1-col on mobile */
@@ -747,22 +748,22 @@
 
       <div class="order-card" style="grid-column: 1 / -1;">
         <h4>內用 Dine-in</h4>
-        <div class="dine-in-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="dine-in-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px;">
           <div>
             <div class="order-sub">標註 *FOR HERE* 或 *AFTER MEAL*</div>
             <div class="flow">選合適餐盤 <span class="arrow-right">→</span> 判斷是否需加熱 <span class="arrow-right">→</span> 上餐</div>
-            <div style="margin-top:12px;font-size:13px;font-weight:600;color:var(--text-muted);">需要加熱的步驟：</div>
-            <div class="heat-steps" style="grid-template-columns:repeat(2,1fr);margin-top:8px;">
-              <div class="heat-step"><div class="hn">1</div>烤箱上方入水口加入 3～5cc 飲用水</div>
-              <div class="heat-step"><div class="hn">2</div>左旋鈕轉至麵包類（約11點鐘方向）</div>
-              <div class="heat-step"><div class="hn">3</div>右旋鈕轉至 2～2.5 分鐘</div>
-              <div class="heat-step"><div class="hn">4</div>將單子與盛裝盤置於台面，表示使用中或等候烤箱</div>
-            </div>
           </div>
           <div>
             <div class="order-sub">單上無標記（外帶單）</div>
             <div class="flow">按外帶流程準備 <span class="arrow-right">→</span> 完成後整袋置於收銀機櫃台前方待客人離店時領取</div>
           </div>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:8px;">需要加熱的步驟：</div>
+        <div class="heat-steps" style="grid-template-columns:repeat(4,1fr);margin-top:0;">
+          <div class="heat-step"><div class="hn">1</div>烤箱上方入水口加入 3～5cc 飲用水</div>
+          <div class="heat-step"><div class="hn">2</div>左旋鈕轉至麵包類（約11點鐘方向）</div>
+          <div class="heat-step"><div class="hn">3</div>右旋鈕轉至 2～2.5 分鐘</div>
+          <div class="heat-step"><div class="hn">4</div>將單子與盛裝盤置於台面，表示使用中或等候烤箱</div>
         </div>
       </div>
 
