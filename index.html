@@ -41,12 +41,12 @@
     justify-content: space-between;
     gap: 12px;
     position: sticky; top: 0; z-index: 100;
-    overflow: hidden;
   }
-  .logo { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; overflow: hidden; }
-  .logo-icon { font-size: 22px; }
-  .logo-text h1 { font-size: 18px; font-weight: 700; color: var(--text); }
-  .logo-text p { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+  .logo { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+  .logo-icon { font-size: 22px; flex-shrink: 0; }
+  .logo-text { min-width: 0; overflow: hidden; }
+  .logo-text h1 { font-size: 18px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .logo-text p { font-size: 12px; color: var(--text-muted); margin-top: 1px; white-space: nowrap; }
   .version { font-size: 12px; color: var(--accent); font-weight: 600; white-space: nowrap; flex-shrink: 0; }
 
   /* ─── Nav ─── */
@@ -291,12 +291,11 @@
 
   /* ─── Responsive ─── */
   @media (max-width: 700px) {
-    header { padding: 8px 12px; height: auto; min-height: 52px; }
+    /* Header */
+    header { padding: 0 12px; height: 56px; }
     .logo-text p { display: none; }
     .logo-text h1 { font-size: 14px; }
     .logo-icon { font-size: 16px; }
-    .logo-text h1 { font-size: 15px; }
-    .logo-icon { font-size: 18px; }
     nav { padding: 0 4px; }
     main { padding: 20px 12px 60px; }
 
